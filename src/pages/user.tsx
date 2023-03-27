@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState, SyntheticEvent } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
@@ -7,33 +7,36 @@ import styles from "@/styles/Home.module.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function User() {
-    const [email, setEmail] = useState('')
-    const [name, setName] = useState('')
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  console.log(process.env)
   function handleInsertUser() {
-    fetch('', {
-        method: 'post',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            email,
-            name
-        }),
+    fetch(`${process.env.NEXT_PUBLIC_API_HOST}/users`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        name,
+      }),
     })
-        .then(() => {
-            console.log('success');
-        })
-        .catch(() => {
-            alert('fail')
-        })
+      .then(() => {
+        console.log("success");
+      })
+      .catch(() => {
+        alert("fail");
+      });
   }
 
-  function handleNameChange(e) {
-    setName(e.target.value)
+  function handleNameChange(e: SyntheticEvent) {
+    let target = e.target as HTMLInputElement;
+    setName(target.value);
   }
 
-  function handleEmailChange(e) {
-    setEmail(e.target.value)
+  function handleEmailChange(e: SyntheticEvent) {
+    let target = e.target as HTMLInputElement;
+    setEmail(target.value);
   }
 
   return (
@@ -45,8 +48,16 @@ export default function User() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <input type="email" placeholder="Enter email" onChange={handleEmailChange} />
-        <input type="name" placeholder="Enter full name" onChange={handleNameChange} />
+        <input
+          type="email"
+          placeholder="Enter email"
+          onChange={handleEmailChange}
+        />
+        <input
+          type="name"
+          placeholder="Enter full name"
+          onChange={handleNameChange}
+        />
         <button onClick={handleInsertUser}>Insert user</button>
       </main>
     </>
