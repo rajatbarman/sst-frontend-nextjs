@@ -9,7 +9,6 @@ const inter = Inter({ subsets: ["latin"] });
 export default function User() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  console.log(process.env)
   function handleInsertUser() {
     fetch(`${process.env.NEXT_PUBLIC_API_HOST}/users`, {
       method: "post",
